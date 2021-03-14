@@ -1,8 +1,8 @@
 # arduino-eurorack
 This repo will host varius arduino-based eurorack modules. The current testing device is an [Arduino Uno REV3](https://store.arduino.cc/arduino-uno-rev3).
 
-- CV Sequencer
-- Gate Sequencer
+- [CV Sequencer](#cv-sequencer)
+- [Gate Sequencer](#gate-sequencer)
 
 ## CV Sequencer
 Single-channel, 8-step CV Sequencer
