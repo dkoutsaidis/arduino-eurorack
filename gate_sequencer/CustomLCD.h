@@ -41,7 +41,7 @@ void printAllSteps(bool* stepsGrid, int numSteps, int userSteps)
   for (int iStep = 0; iStep < numSteps; ++iStep)
   {
     int currentValue = int(stepsGrid[iStep]);
-    lcd.write(byte(iStep == userSteps ? currentValue + 4 : currentValue));
+    lcd.write(byte((iStep == userSteps - 1) ? currentValue + 4 : currentValue));
   }
 }
 
@@ -64,4 +64,16 @@ void updateBMP(int newValue)
   }
 }
 
+void updateSteps(int newValue)
+{
+  String newValueChars = String(newValue);
+  lcd.setCursor(14, 0);
+  lcd.print(String(newValue));
+
+  if (newValueChars.length() == 1)
+  {
+    lcd.setCursor(15, 0);
+    lcd.print(" ");
+  }
+}
 #endif
