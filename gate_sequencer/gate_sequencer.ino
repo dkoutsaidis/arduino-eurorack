@@ -13,13 +13,12 @@ bool stepsGrid[] = {true, false, false, false,
 int numChannels = sizeof(channelPins) / sizeof(channelPins[0]);
 int numSteps = sizeof(stepsGrid) / sizeof(stepsGrid[0]);
 
-void playStep(int pin, float pulseWidthHalf, bool shouldPlay)
-{
-  digitalWrite(pin, shouldPlay);
-  delay(pulseWidthHalf);
-  digitalWrite(pin, LOW);
-  delay(pulseWidthHalf);
-}
+unsigned long flipPulseStateTime = userBPMms / 2;
+unsigned long flipPulseStatePreviousTime = 0;
+unsigned long moveStepTime = userBPMms;
+unsigned long moveStepPreviousTime = 0;
+int iStep = -1;
+bool iState = false;
 
 void setup()
 { 
@@ -36,12 +35,27 @@ void setup()
 }
 
 void loop()
-{  
-  for (int iStep = 0; iStep < numSteps; ++iStep)
+{
+  unsigned long currentTime = millis();
+
+  // step forward
+  if (currentTime - moveStepPreviousTime >= moveStepTime)
   {
+    iStep = (iStep == numSteps - 1) ? 0 : iStep + 1;
+    
     printAllSteps(stepsGrid, numSteps);
     setActiveStep(iStep, stepsGrid[iStep]);
     
-    playStep(channelPins[0], userBPMms / 2, stepsGrid[iStep]);
+    moveStepPreviousTime = currentTime;
+  }
+  
+  // flip the state of the pulse for each step
+  if (currentTime - flipPulseStatePreviousTime >= flipPulseStateTime)
+  {
+    digitalWrite(channelPins[0], !iState ? stepsGrid[iStep] : LOW);
+    
+    iState = !iState;
+    
+    flipPulseStatePreviousTime = currentTime;
   }
 }
