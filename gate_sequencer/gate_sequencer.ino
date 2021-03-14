@@ -1,39 +1,44 @@
-const float userBPM = 120.0;
-const float userDutyCyclePercentage = 0.1; // [0, 1] for HIGH state
-const int userTimeSignatureForStep = 16; // {4, 8, 16, 32}
+#include "CustomLCD.h"
+
+const float userBPM = 60.0;
+const int userTimeSignatureForStep = 4; // {4, 8, 16, 32}
 
 const float bpmToHz = 1.0 / 60.0;
 float userBPMms = (1.0 / (userBPM * bpmToHz)) * 1000.0 / float(userTimeSignatureForStep / 4);
 
 const int channelPins[] = {13};
-const bool stepsGrid[] = {true, false, false, true,
-                          false, true, false, true,
-                          true, false, false, true,
-                          true, false, false, false};
+bool stepsGrid[] = {true, false, false, false,
+                    true, false, false, false,
+                    true, false, false, false,
+                    true, false, false, false};
 
 int numChannels = sizeof(channelPins) / sizeof(channelPins[0]);
 int numSteps = sizeof(stepsGrid) / sizeof(stepsGrid[0]);
 
-void playStep(int pin, float pulseWidthHigh, float pulseWidthLow, bool shouldPlay) {
+void playStep(int pin, float pulseWidthHalf, bool shouldPlay) {
   digitalWrite(pin, shouldPlay);
-  delay(pulseWidthHigh);
+  delay(pulseWidthHalf);
   digitalWrite(pin, LOW);
-  delay(pulseWidthLow);
+  delay(pulseWidthHalf);
 }
 
-void setup() {
-  Serial.begin(9600);
-  
+void setup() { 
   for (int iChannel = 0; iChannel < numChannels; ++iChannel) {
     pinMode(channelPins[iChannel], OUTPUT);
   }
+  
+  setupCustomChars();
+  lcd.begin(16, 2);
+  lcd.clear();
+  printInitInfo(userBPM, numSteps);
+  printAllSteps(stepsGrid, numSteps);
 }
 
-void loop() {
+void loop() {  
   for (int iStep = 0; iStep < numSteps; ++iStep) {
-    Serial.println(String(iStep + 1) + "/" + String(numSteps) + ": " + (stepsGrid[iStep] ? "ON" : "OFF"));
-    playStep(channelPins[0], userBPMms * userDutyCyclePercentage, userBPMms * (1.0 - userDutyCyclePercentage), stepsGrid[iStep]);
+    printAllSteps(stepsGrid, numSteps);
+    setActiveStep(iStep, stepsGrid[iStep]);
+    
+    playStep(channelPins[0], userBPMms / 2, stepsGrid[iStep]);
   }
-
-  Serial.println();
 }
