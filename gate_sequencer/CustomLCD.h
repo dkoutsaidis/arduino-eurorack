@@ -9,6 +9,9 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 void setupCustomChars()
 {
+  createActiveCharacter(StepOnActive, StepOn, sizeof(StepOn));
+  createActiveCharacter(StepOffActive, StepOff, sizeof(StepOff));
+
   lcd.createChar(0, StepOff);
   lcd.createChar(2, StepOffActive);
   lcd.createChar(1, StepOn);
