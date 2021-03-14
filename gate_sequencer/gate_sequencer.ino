@@ -1,10 +1,13 @@
 #include "CustomLCD.h"
+#include "GateSequencerHelpers.h"
+
+const float minBPM = 30.0;
+const float maxBPM = 240.0;
 
 float userBPM = 60.0;
-const float bpmToHz = 1.0 / 60.0;
-float userBPMms = (1.0 / (userBPM * bpmToHz)) * 1000.0;
+float userBPMms = bpmToMs(userBPM);
 
-const int channelPins[] = {13};
+int channelPins[] = {13};
 bool stepsGrid[] = {true, false, false, false,
                     true, false, false, false,
                     true, false, false, false,
@@ -21,7 +24,7 @@ int iStep = -1;
 bool iState = false;
 
 void setup()
-{ 
+{
   for (int iChannel = 0; iChannel < numChannels; ++iChannel)
   {
     pinMode(channelPins[iChannel], OUTPUT);
@@ -58,4 +61,10 @@ void loop()
     
     flipPulseStatePreviousTime = currentTime;
   }
+
+  userBPM = float(int(round(minBPM + analogRead(A0) * ((maxBPM - minBPM) / 1023.0))));
+  userBPMms = bpmToMs(userBPM);
+  flipPulseStateTime = userBPMms / 2;
+  moveStepTime = userBPMms;
+  updateBMP(userBPM);
 }

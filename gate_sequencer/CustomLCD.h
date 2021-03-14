@@ -65,7 +65,7 @@ void printInitInfo(float userBPM, int numSteps)
   delay(5000);
 }
 
-void printAllSteps(bool stepsGrid[], int numSteps)
+void printAllSteps(bool* stepsGrid, int numSteps)
 {
   lcd.setCursor(0, 1);
   for (int iStep = 0; iStep < numSteps; ++iStep)
@@ -78,6 +78,19 @@ void setActiveStep(int position, bool state)
 {
   lcd.setCursor(position, 1);
   lcd.write(byte(int(state) + 2));
+}
+
+void updateBMP(int newValue)
+{
+  String newValueChars = String(newValue);
+  lcd.setCursor(4, 0);
+  lcd.print(String(newValue));
+
+  if (newValueChars.length() == 2)
+  {
+    lcd.setCursor(6, 0);
+    lcd.print(" ");
+  }
 }
 
 #endif
