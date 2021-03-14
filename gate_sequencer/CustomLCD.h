@@ -2,47 +2,8 @@
 #define CUSTOM_LCD_H
 
 #include "Arduino.h"
+#include "CustomCharacters.h"
 #include <LiquidCrystal.h>
-
-byte StepOn[8] = {
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B00000,
-};
-
-byte StepOff[8] = {
-  B11111,
-  B10001,
-  B10001,
-  B10001,
-  B10001,
-  B11111,
-  B00000,
-};
-
-byte StepOnActive[8] = {
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-};
-
-byte StepOffActive[8] = {
-  B11111,
-  B10001,
-  B10001,
-  B10001,
-  B10001,
-  B11111,
-  B11111,
-};
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 

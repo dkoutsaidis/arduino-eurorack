@@ -15,6 +15,7 @@ bool stepsGrid[] = {true, false, false, false,
 
 int numChannels = sizeof(channelPins) / sizeof(channelPins[0]);
 int numSteps = sizeof(stepsGrid) / sizeof(stepsGrid[0]);
+int userSteps = 8;
 
 unsigned long flipPulseStateTime = userBPMms / 2;
 unsigned long flipPulseStatePreviousTime = 0;
