@@ -62,7 +62,7 @@ void printInitInfo(float userBPM, int numSteps)
   lcd.setCursor(8, 0);
   lcd.print("Steps:" + String(numSteps));
 
-  delay(10000);
+  delay(5000);
 }
 
 void printAllSteps(bool stepsGrid[], int numSteps)
