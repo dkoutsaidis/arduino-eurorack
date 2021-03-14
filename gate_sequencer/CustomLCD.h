@@ -12,10 +12,16 @@ void setupCustomChars()
   createActiveCharacter(StepOnActive, StepOn, sizeof(StepOn));
   createActiveCharacter(StepOffActive, StepOff, sizeof(StepOff));
 
+  createFinalCharacter(StepOnFinal, StepOn, sizeof(StepOn));
+  createFinalCharacter(StepOffFinal, StepOff, sizeof(StepOff));
+
   lcd.createChar(0, StepOff);
   lcd.createChar(2, StepOffActive);
+  lcd.createChar(4, StepOffFinal);
+  
   lcd.createChar(1, StepOn);
   lcd.createChar(3, StepOnActive);
+  lcd.createChar(5, StepOnFinal);
 }
 
 void printInitInfo(float userBPM, int numSteps)
@@ -29,12 +35,13 @@ void printInitInfo(float userBPM, int numSteps)
   delay(5000);
 }
 
-void printAllSteps(bool* stepsGrid, int numSteps)
+void printAllSteps(bool* stepsGrid, int numSteps, int userSteps)
 {
   lcd.setCursor(0, 1);
   for (int iStep = 0; iStep < numSteps; ++iStep)
   {
-    lcd.write(byte(int(stepsGrid[iStep])));
+    int currentValue = int(stepsGrid[iStep]);
+    lcd.write(byte(iStep == userSteps ? currentValue + 4 : currentValue));
   }
 }
 

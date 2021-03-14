@@ -35,7 +35,7 @@ void setup()
   lcd.begin(16, 2);
   lcd.clear();
   printInitInfo(userBPM, numSteps);
-  printAllSteps(stepsGrid, numSteps);
+  printAllSteps(stepsGrid, numSteps, userSteps);
 }
 
 void loop()
@@ -47,7 +47,7 @@ void loop()
   {
     iStep = (iStep == numSteps - 1) ? 0 : iStep + 1;
     
-    printAllSteps(stepsGrid, numSteps);
+    printAllSteps(stepsGrid, numSteps, userSteps);
     setActiveStep(iStep, stepsGrid[iStep]);
     
     moveStepPreviousTime = currentTime;
